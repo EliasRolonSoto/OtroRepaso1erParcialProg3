@@ -147,9 +147,50 @@ namespace TestRepa
                                        where c != "C"
                                        select c).ToList());
 
+
             Assert.False(lista.Contains("C"));
             Assert.Equal(4, lista.Count);
         }
+        [Fact]
+        public void DebeAgregarAlumnoEnPosicionEspecifica()
+        {
+            var lista = new Queue<string>();
 
+            lista.Enqueue("A");
+            lista.Enqueue("B");
+            lista.Enqueue("C");
+            lista.Enqueue("D");
+            lista.Enqueue("F");
+
+            Assert.Equal(5, lista.Count());
+
+            var aux = (from c in lista
+                       where c == "c"
+                       select c).ToList().FindIndex(c => c == "C");
+
+            if (aux >= 0)
+            {
+                for (int i = 0; i <= lista.Count+1; i++)
+                {
+                    if (i < aux)
+                    {
+                        lista.Enqueue(lista.Dequeue());
+                    }
+                    else if (i == aux)
+                    {
+                        lista.Enqueue("agregado");
+                        lista.Enqueue(lista.Dequeue());
+                    }
+                    else if (i > aux)
+                    {
+                        lista.Enqueue(lista.Dequeue());
+                    }
+                }
+
+            }
+
+            //Assert.True(lista.Contains("agregado"));
+            Assert.Equal(6, lista.Count);
+        }
     }
 }
