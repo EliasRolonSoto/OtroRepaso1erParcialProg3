@@ -82,7 +82,7 @@ namespace TestRepa
         }
 
         [Fact]
-        public void DebeConsultarConLinqYBorrar()
+        public void AgregarYBorrar()
         {
             var a = new Class1();
 
@@ -105,6 +105,50 @@ namespace TestRepa
             a.AddItems("manzana");
             Assert.Equal(4, a._coleccion.Count());
 
+
+        }
+        [Fact]
+        public void DebeConsultarConLinqYBorrar()
+        {
+
+            var lista = new Queue<string>();
+
+            lista.Enqueue("a");
+            lista.Enqueue("B");
+            lista.Enqueue("C");
+            lista.Enqueue("D");
+            lista.Enqueue("F");
+
+            var aux = (from c in lista
+                       where c == "c"
+                       select c).ToList().FindIndex(c => c == "C");
+
+
+            if (aux >= 0)
+            {
+                for (int i = 0; i <= lista.Count; i++)
+                {
+                    if (i < aux)
+                    {
+                        lista.Enqueue(lista.Dequeue());
+                    }
+                    else if(i == aux)
+                    {
+                        lista.Dequeue();
+                    }
+                    else if(i> aux)
+                    {
+                        lista.Enqueue(lista.Dequeue());
+                    }
+                }
+
+            }
+            lista = new Queue<string>((from c in lista
+                                       where c != "C"
+                                       select c).ToList());
+
+            Assert.False(lista.Contains("C"));
+            Assert.Equal(4, lista.Count);
         }
 
     }
